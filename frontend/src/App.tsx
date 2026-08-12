@@ -8,6 +8,7 @@ import IngresosPage from './pages/IngresosPage';
 import GastosPage from './pages/GastosPage';
 import MetasPage from './pages/MetasPage';
 import DeudasPage from './pages/DeudasPage';
+import GastosFijosPage from './pages/GastosFijosPage';
 
 function PrivateLayout() {
   const { user, loading } = useAuth();
@@ -37,6 +38,7 @@ export default function App() {
             <Route path="/gastos" element={<GastosPage />} />
             <Route path="/metas" element={<MetasPage />} />
             <Route path="/deudas" element={<DeudasPage />} />
+            <Route path="/gastos-fijos" element={<GastosFijosPage />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

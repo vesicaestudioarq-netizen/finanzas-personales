@@ -73,6 +73,32 @@ db.exec(`
     created_at TEXT DEFAULT (datetime('now')),
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
   );
+
+  CREATE TABLE IF NOT EXISTS gastos_fijos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    usuario_id INTEGER NOT NULL,
+    nombre TEXT NOT NULL,
+    monto REAL NOT NULL,
+    categoria_id INTEGER,
+    dia_vencimiento INTEGER DEFAULT 1,
+    activo INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT (datetime('now')),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id)
+  );
+
+  CREATE TABLE IF NOT EXISTS gastos_fijos_pagos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    gasto_fijo_id INTEGER NOT NULL,
+    usuario_id INTEGER NOT NULL,
+    mes TEXT NOT NULL,
+    pagado INTEGER DEFAULT 0,
+    gasto_id INTEGER,
+    fecha_pago TEXT,
+    UNIQUE(gasto_fijo_id, mes),
+    FOREIGN KEY (gasto_fijo_id) REFERENCES gastos_fijos(id) ON DELETE CASCADE,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+  );
 `);
 
 // Categorías por defecto para usuarios nuevos

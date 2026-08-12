@@ -6,7 +6,8 @@ const links = [
   { to: '/ingresos', icon: '💰', label: 'Ingresos' },
   { to: '/gastos',   icon: '💳', label: 'Gastos' },
   { to: '/metas',    icon: '🎯', label: 'Metas' },
-  { to: '/deudas',   icon: '📋', label: 'Deudas' },
+  { to: '/deudas',        icon: '📋', label: 'Deudas' },
+  { to: '/gastos-fijos',  icon: '🔁', label: 'Fijos' },
 ];
 
 export default function Sidebar() {
