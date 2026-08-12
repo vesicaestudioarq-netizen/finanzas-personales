@@ -16,6 +16,12 @@ app.use('/api', (req, res, next) => {
   next();
 }, authMiddleware, datosRouter);
 
+// Capturar errores del servidor y devolver JSON en vez de HTML
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: err.message || 'Error interno del servidor' });
+});
+
 // Frontend en producción
 const dist = path.join(__dirname, '..', '..', 'frontend', 'dist');
 app.use(express.static(dist));

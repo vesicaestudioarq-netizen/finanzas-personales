@@ -179,11 +179,16 @@ router.get('/gastos-fijos', (req, res) => {
 });
 
 router.post('/gastos-fijos', (req, res) => {
-  const { nombre, monto, categoria_id, dia_vencimiento } = req.body;
-  const r = dbRef.prepare(
-    'INSERT INTO gastos_fijos (usuario_id, nombre, monto, categoria_id, dia_vencimiento) VALUES (?,?,?,?,?)'
-  ).run(req.user.id, nombre, monto, categoria_id || null, dia_vencimiento || 1);
-  res.json({ id: r.lastInsertRowid });
+  try {
+    const { nombre, monto, categoria_id, dia_vencimiento } = req.body;
+    const r = dbRef.prepare(
+      'INSERT INTO gastos_fijos (usuario_id, nombre, monto, categoria_id, dia_vencimiento) VALUES (?,?,?,?,?)'
+    ).run(req.user.id, nombre, monto, categoria_id || null, dia_vencimiento || 1);
+    res.json({ id: r.lastInsertRowid });
+  } catch (err) {
+    console.error('gastos-fijos POST error:', err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 router.put('/gastos-fijos/:id', (req, res) => {
