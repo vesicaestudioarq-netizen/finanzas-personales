@@ -8,8 +8,8 @@ interface Meta { id: number; nombre: string; monto_objetivo: number; monto_actua
 function MetaModal({ item, onClose, onSave }: { item?: Meta; onClose: () => void; onSave: () => void }) {
   const [form, setForm] = useState({
     nombre: item?.nombre || '',
-    monto_objetivo: item?.monto_objetivo || '',
-    monto_actual: item?.monto_actual || 0,
+    monto_objetivo: item?.monto_objetivo ?? ('' as unknown as number),
+    monto_actual: item?.monto_actual ?? ('' as unknown as number),
     fecha_limite: item?.fecha_limite || '',
     color: item?.color || '#195740',
   });
