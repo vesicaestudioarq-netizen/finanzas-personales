@@ -22,6 +22,7 @@ interface PagoMes extends GastoFijo {
 
 function GastoFijoModal({ item, onClose, onSave }: { item?: GastoFijo; onClose: () => void; onSave: () => void }) {
   const [cats, setCats] = useState<any[]>([]);
+  const [error, setError] = useState('');
   const [form, setForm] = useState({
     nombre: item?.nombre || '',
     monto: item?.monto || '',
@@ -35,15 +36,23 @@ function GastoFijoModal({ item, onClose, onSave }: { item?: GastoFijo; onClose: 
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (item) await api.put(`/gastos-fijos/${item.id}`, form);
-    else await api.post('/gastos-fijos', form);
-    onSave();
+    setError('');
+    try {
+      let res;
+      if (item) res = await api.put(`/gastos-fijos/${item.id}`, form);
+      else res = await api.post('/gastos-fijos', form);
+      if (res?.error) { setError(res.error); return; }
+      onSave();
+    } catch (err: any) {
+      setError(err.message || 'Error al guardar');
+    }
   };
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
         <h2 className="text-lg font-bold text-primary mb-4">{item ? 'Editar' : 'Nuevo'} gasto fijo</h2>
+        {error && <p className="bg-red-50 text-red-600 text-sm p-3 rounded-lg mb-3">{error}</p>}
         <form onSubmit={submit} className="space-y-3">
           <div>
             <label className="text-xs text-gray-500 mb-1 block">Nombre</label>
